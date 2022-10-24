@@ -1,34 +1,36 @@
+//@CrossOrigin(origins = "http://localhost:4200")
+//@GetMapping("/yourPath")
 
 let redirect_uri ="http://127.0.0.1:5500/spotify.html"
 let client_id="";
 let clientsecret="";
 let authorize="https://accounts.spotify.com/authorize"
 const token = "https://accounts.spotify.com/api/token"
-const DEVICES ="https://accounts.spotify.com/v1/me/player/devices/"
-let  access_token= null
+const DEVICES ="https://api.spotify.com/v1/me/player/devices"
+var access_token= null
 
-function onpageload(){
+function onPageLoad(){
     client_id = localStorage.getItem("client_id")
     clientsecret=localStorage.getItem("clientsecret")
-    if(window.location.search.length > 0){
+   if(window.location.search.length > 0){
         handleredirect()
     }
     else{
         access_token = localStorage.getItem("access_token")
-        /*if(access_token == null){
+        if(access_token == null){
             document.getElementById("tokensection").style.display = "block"
         }
         else{
             document.getElementById("devicesection").style.display= "block"
-            getdevices()
-        }*/
+            getDevices()
+        }
     }
 
 }
 function handleredirect(){
      let code = getCode()
      fetchaccesstoken(code)
-     window.history.pushState("","",redirect_uri)// remove param from url
+     window.history.pushState("","",redirect_uri)// remove paramater from url
 }
 function fetchaccesstoken(code){
     let body = "grant_type=authorization_code";
@@ -61,7 +63,7 @@ function handleouthresponse(){
             localStorage.setItem("refresh_token" , refresh_token)
             
        }
-       onpageload()
+       onPageLoad()
     }
     else{
         console.log(this.responseText);
@@ -97,7 +99,7 @@ function getAOuth(){
    url += "&show_dialog=true";
    window.location.href = url; //show spotify oauth screen it will take me to spotify Outh page 
 }
- function getdevices(){
+ function getDevices(){
     callApi("GET",DEVICES ,null, handledeviceresponse)
  }
  function handledeviceresponse(){
@@ -121,9 +123,19 @@ function getAOuth(){
     node.innerHTML=item.name
     document.getElementById("devices").appendChild(node)
  }
+ function refreshaccesstoken(){
+    refresh_token = localStorage.getItem("refresh_token")
+    let body = "grant_type=refresh_token"
+    body += "&refresh_token=" + refresh_token
+    body += "&client_id=" + client_id
+    callouthapi(body)
+ }
  function callApi(method , url,body,callback){
     let xhr = new XMLHttpRequest()
     xhr.open(method, url ,true);
+    //xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    //xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    //hr.setRequestHeader('Access-Control-Allow-Headers', '*');
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
     xhr.send(body)

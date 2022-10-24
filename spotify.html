@@ -1,13 +1,15 @@
-<html lang="en">
+<!DOCTYPE html>
+    <html lang="en">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unfurl</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="spotify.css" rel="stylesheet">
     <script src="spotify.js"></script>
 </head>
 
-<body onload="onpageload()">
+<body onload="onPageLoad()">
     <div id="container">
 <div id="tokensection">
 <div>
@@ -22,12 +24,15 @@
     <input type="button" onclick="getAOuth()" id="butt" value="verification">
 </div>
 </div>
-<!--
+
 <div id="devicesection">
     <label for="devices">my devices</label>
     <select id="devices"></select>
-    <input type="button"  onclick="getdevices()"  value="findevices">
-</div>-->
+    <input type="button"  onclick="getDevices()"  value="findevices">
 </div>
+
+</div>
+
 </body>
+<!--<script src="spotify.js"></script>-->
 </html>
