@@ -7,6 +7,9 @@ let clientsecret="";
 let authorize="https://accounts.spotify.com/authorize"
 const token = "https://accounts.spotify.com/api/token"
 const DEVICES ="https://api.spotify.com/v1/me/player/devices"
+const CURRENT = "https://api.spotify.com/v1/me/player/currently-playing"
+const TOPER = "https://api.spotify.com/v1/me/top/tracks"
+const RECENT ="https://api.spotify.com/v1/me/player/recently-played"
 var access_token= null
 
 function onPageLoad(){
@@ -23,6 +26,7 @@ function onPageLoad(){
         else{
             document.getElementById("devicesection").style.display= "block"
             getDevices()
+            getplaying()
         }
     }
 
@@ -99,9 +103,60 @@ function getAOuth(){
    url += "&show_dialog=true";
    window.location.href = url; //show spotify oauth screen it will take me to spotify Outh page 
 }
+function recplay(){
+    callApi("GET",RECENT, null, handlerecent)
+}
+function topread(){
+    callApi("GET", TOPER,null,handletop)
+}
  function getDevices(){
     callApi("GET",DEVICES ,null, handledeviceresponse)
  }
+ function getplaying(){
+    callApi("GET",CURRENT,null,handleplaying)
+ }
+ function handlerecent(){
+    if(this.status == 200){
+        var data = JSON.parse(this.responseText)
+        console.log(data)
+    }else if(this.status ==401){
+        refreshaccesstoken
+    }else{
+        console.log(this.responseText)
+        alert(this.responseText)
+    }
+ }
+ function handletop(){
+    if(this.status == 200){
+        var  data = JSON.parse(this.responseText);
+        console.log(data)
+    }else if(this.status == 401){
+        refreshaccesstoken()
+    }else{
+        console.log(this.responseText)
+        alert(this.responseText)
+    }
+ }
+ function handleplaying(){
+    if(this.status == 200){
+        var data = JSON.parse(this.responseText)
+        console.log(data)
+       // removeAllItems("playing")
+       // data.devices.forEach(item => play(item))
+    }else if(this.status == 401){
+        refreshaccesstoken()
+    }else{
+        console.log(this.responseText)
+        alert(this.responseText)
+    }
+ }
+ /*function play(item){
+    let node = document.createElement("option")
+    node.value=item.id
+    node.innerHTML=item.currently_playing_type
+    document.getElementById("playing")
+ }*/
+ 
  function handledeviceresponse(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText)
@@ -147,3 +202,5 @@ function getAOuth(){
         node.removeChild(node.firstchild)
     }
  }
+ 
+ 
