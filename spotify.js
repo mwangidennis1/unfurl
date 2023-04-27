@@ -188,6 +188,13 @@ function topread(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText)
         console.log(data)
+        removeAllItems("recent")
+        data.items.forEach(item =>
+            ayee(item),
+            //console.log(item.track.name)
+            //document.getElementById("recent").value=item.track.name
+           )
+           //document.getElementById("recent").value=currentplaylist
     }else if(this.status ==401){
         refreshaccesstoken
     }else{
@@ -195,10 +202,21 @@ function topread(){
         alert(this.responseText)
     }
  }
+ //unit test area 
+ function ayee(item){
+    let node = document.createElement("option")
+    console.log(node)
+    node.value=item.track.name
+    node.innerHTML=item.track.name
+    document.getElementById("recent").appendChild(node)
+ }
  function handletop(){
     if(this.status == 200){
         var  data = JSON.parse(this.responseText);
         console.log(data)
+        if(data.item != null){
+            //document.getElementById('play1').src=data.items[0].track.album.images[0].url
+        }
     }else if(this.status == 401){
         refreshaccesstoken()
     }else{
@@ -210,8 +228,9 @@ function topread(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText)
         console.log(data)
-       // removeAllItems("playing")
-       // data.devices.forEach(item => play(item))
+        removeAllItems("playing")
+        //console.log(data.devices)
+       data.devices.forEach(item => play(item))
     }else if(this.status == 401){
         refreshaccesstoken()
     }else{
@@ -219,12 +238,12 @@ function topread(){
         alert(this.responseText)
     }
  }
- /*function play(item){
+ function play(item){
     let node = document.createElement("option")
     node.value=item.id
     node.innerHTML=item.currently_playing_type
     document.getElementById("playing")
- }*/
+ }
  
  function handledeviceresponse(){
     if(this.status == 200){
@@ -268,7 +287,7 @@ function topread(){
  function removeAllItems(elementid){
     let node = document.getElementById(elementid)
     while(node.firstChild){
-        node.removeChild(node.firstchild)
+        node.removeChild(node.firstChild)
     }
  }
  function deviceid(){
@@ -313,11 +332,12 @@ function topread(){
              currentplaylist = data.context.uri;
              //console.log(currentplaylist)
             currentplaylist = currentplaylist.substring(currentplaylist.lastIndexOf(":") + 1, currentplaylist.length)
-            console.log(currentplaylist)
+           // console.log(currentplaylist)
             document.getElementById("player").value=currentplaylist
         }
         if(data.device != null){
             currentdevice =data.device.id
+            console.log(data.device)
             document.getElementById("devices").value = currentdevice
         }
     }else if(this.status == 401){
@@ -337,3 +357,4 @@ function topread(){
     body.offset.position_ms = 0;
     callApi("PUT",PLAY +"?device_id=" + deviceid(),JSON.stringify(body), handleplayingactivity)
  }
+ 
