@@ -18,6 +18,8 @@ const PREVIOUS = "https://api.spotify.com/v1/me/player/previous"
 const PLAY ="https://api.spotify.com/v1/me/player/play"
 const PAUSE ="https://api.spotify.com/v1/me/player/pause"
 const NEXT = "https://api.spotify.com/v1/me/player/next"
+const SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle";
+
 var access_token= null
 
 function onPageLoad(){
@@ -164,13 +166,15 @@ function topread(){
  function handleplaylist(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText)
-        console.log(data)
-        //console.log(data.items[0])
+        //console.log(data)
+        //console.log(data.items)
         removeAllItems("player");
        data.items.forEach(item =>
+        //console.log(item),
         addplaylists(item)
        )
-       document.getElementById("player").value=currentplaylist
+     document.getElementById("player").value=currentplaylist
+     console.log(currentplaylist)
     }else if(this.status == 401){
         refreshaccesstoken
     }else{
@@ -179,9 +183,11 @@ function topread(){
     }
  }
  function addplaylists(item){
+    //console.log(item)
     var node= document.createElement("option");
     node.value= item.id
     node.innerHTML=item.name
+   // console.log(node.value)
     document.getElementById("player").appendChild(node)
  }
  function handlerecent(){
@@ -200,7 +206,7 @@ function topread(){
     }else{
         console.log(this.responseText)
         alert(this.responseText)
-    }
+    } 
  }
  //unit test area 
  function ayee(item){
@@ -238,13 +244,14 @@ function topread(){
         alert(this.responseText)
     }
  }
+ /*
  function play(item){
     let node = document.createElement("option")
     node.value=item.id
     node.innerHTML=item.currently_playing_type
     document.getElementById("playing")
  }
- 
+ */
  function handledeviceresponse(){
     if(this.status == 200){
         var data = JSON.parse(this.responseText)
@@ -292,6 +299,10 @@ function topread(){
  }
  function deviceid(){
     return document.getElementById("devices").value;
+ }
+ function  shuffle(){
+    callApi("PUT",SHUFFLE + "?state=true&device_id=" + deviceid() ,null,handleplayingactivity)
+    play()
  }
  function previous(){
     callApi("POST", PREVIOUS + "?device_id=" + deviceid(),null, handleplayingactivity)
@@ -348,10 +359,18 @@ function topread(){
     }
  }
  function play(){
+    //console.log(currentplaylist)
     let playlistid= document.getElementById("player").value
     let tracks = document.getElementById("track").value
+    let album = document.getElementById("album").value
+    console.log(album)
     let body ={}
+    if(album.length > 0){
+        body.context_uri = album
+        console.log(body.context_uri)
+    }else{
     body.context_uri= "spotify:playlist:" + playlistid
+    }
     body.offset = {};
     body.offset.position = tracks.length > 0 ? Number(tracks) : 0;
     body.offset.position_ms = 0;

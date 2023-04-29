@@ -24,7 +24,11 @@
     <input type="button" onclick="getAOuth()" id="butt" value="verification">
 </div>
 </div>
+<!--
+    STARTING UP WITH MESSAGES
+-->
 
+<h1 id="time"></h1>
 <div id="devicesection" class="#">
     <label for="devices">my devices</label>
     <select id="devices"></select>
@@ -38,7 +42,7 @@
     <label for="top read">top read</label>
     <select id="top"></select>
     <input type="button" onclick="topread()" value="top stuff">
-    <br><br>
+    <br><br> 
     <div>
     <label for="recently played">Recently playing</label>
     <select id="recent"></select>
@@ -59,9 +63,14 @@
         <input type="button" onclick="mytracks()" value="my tracks">
     </div>
     <br><br>
+    <div  class="y3">
+        <label for="tracks" class="form-label">Album</label>
+        <input id="album" class="form-control">
+    </div>
     <div>
         <input type="button" onclick="previous()" value="previous">
         <input type="button"  onclick="play()" value="play">
+        <input type="button"  onclick="shuffle()" value="shuffle">
         <input type="button"  onclick="pause()" value="pause">
         <input type="button"   onclick="next()"  value="next">
     </div>
@@ -76,7 +85,29 @@
 
 
 </div>
-
+<div>
+    <a href="index.html"> AYEE PLAYLIST</a>
+</div>
 </body>
 <!--<script src="spotify.js"></script>-->
+<script>
+    var today = new Date();
+    let time = today.getHours() ;
+//console.log(time)
+if(time > 5 && time < 12){
+    console.log(time)
+ var x= document.getElementById("time");
+ x.textContent += "Good Morning"
+}
+else if(time => 12 && time <= 16){
+    var x= document.getElementById("time");
+    x.textContent += "Good Afternoon"
+}else if(time > 16 && time <= 19){
+    var x= document.getElementById("time");
+    x.textContent += "Good Evening"
+}else{
+    var x= document.getElementById("time");
+    x.textContent += "Good Night"
+}
+</script>
 </html>

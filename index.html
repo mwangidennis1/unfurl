@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="spotify.js" ></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my playlist</title>
+</head>
+
+<body>
+    <div>
+        <label for="playlists">My playlist</label>
+        <select id="player"></select>
+        <input type="button" onclick="playlist()" value="my playlists">
+        <br><br>
+    <div  class="y3">
+        <label for="tracks" class="form-label">Album</label>
+        <input id="album" class="form-control">
+    </div>
+    <div>
+        <input type="button" onclick="previous()" value="previous">
+        <input type="button"  onclick="play()" value="play">
+        <input type="button"  onclick="shuffle()" value="shuffle">
+        <input type="button"  onclick="pause()" value="pause">
+        <input type="button"   onclick="next()"  value="next">
+    </div>
+</body>
+</html>
